@@ -48,7 +48,7 @@ const validate_part_2 = (passport) => {
 					break;
 
 				case "hcl":
-					if(!temp[1].match(/#([0-9a-f]){6}$/gm)){
+					if(!temp[1].match(/^#[0-9a-f]{6}$/)){
 						return false;
 					}
 					break;
@@ -59,7 +59,7 @@ const validate_part_2 = (passport) => {
 					}
 					break;
 				case "pid":
-					if(!temp[1].match(/\d{9}/gm)) {
+					if(!temp[1].match(/^\d{9}$/)) {
 						return false;
 					}
 					break;
@@ -74,8 +74,6 @@ for(let i = 0; i < data_arr.length; i++){
 	if(validate_part_1(data_arr[i])) {
 		sum_part1++;
 		let pass_data = data_arr[i].split(/[\n\s]/);//Part 2?
-		console.log(data_arr[i]);
-		console.log(pass_data);
 		if(validate_part_2(pass_data))
 			sum_part2++;
 	}
