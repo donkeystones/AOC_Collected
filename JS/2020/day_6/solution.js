@@ -24,7 +24,7 @@ const parse_group_question_amount = (group) => {
 
 const part1 = () => {
     let sum = 0;
-    for(let group of data.split("\r\n\r\n"))
+    for(let group of data.split(/\r\n\r\n|\n\n/))
         sum += parse_group_question_amount(group);
     return sum;
 }
