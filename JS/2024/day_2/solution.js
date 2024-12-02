@@ -1,54 +1,58 @@
 let fs = require("fs");
-var data = fs.readFileSync('./input.txt','utf8');
+var input = fs.readFileSync('./input.txt','utf8');
 
-let level_data = data.split(/\r\n|\n/);
+function isSafeReport(report) {
+    const levels = report.split(' ').map(Number);
 
-let sum_1 = 0;
-let sum_2 = 0;
+    const isIncreasing = levels.every((_, i, arr) => i === 0 || arr[i] > arr[i - 1]);
+    const isDecreasing = levels.every((_, i, arr) => i === 0 || arr[i] < arr[i - 1]);
 
-for(let level of level_data){
-    let valid = true;//Part 1
-    let level_arr = level.split(" ");
-    let increase = parseInt(level_arr[0]) < parseInt(level_arr[1]);
-    
-    for(let i = 0; i < level_arr.length-1; i++){
-        let a = parseInt(level_arr[i]), b = parseInt(level_arr[i+1]);
-        
-        if(increase && a > b) valid = false;
-        if(!increase && a < b) valid = false;
-        let diff = a - b;
-        if(diff < 0) diff*=-1;
-        if(diff > 3 || diff === 0) valid = false;
-    }
-    if(valid){
-        sum_1++;
-        sum_2++;
+    if (!isIncreasing && !isDecreasing) {
+        return false;
     }
 
-    if(!valid){ //Part 2 if not valid
-        for(let skippable = 0; skippable < level_arr.length; skippable++){
-            let temp = level_arr;
-            temp.splice(skippable,1);
-
-            valid = true;//Part 1
-            let increase = parseInt(temp[0]) < parseInt(temp[1]);
-            
-            for(let i = 0; i < temp.length-1; i++){
-                let a = parseInt(temp[i]), b = parseInt(temp[i+1]);
-                
-                if(increase && a > b) valid = false;
-                if(!increase && a < b) valid = false;
-                let diff = a - b;
-                if(diff < 0) diff*=-1;
-                if(diff > 3 || diff === 0) valid = false;
-            }
-            if(valid){
-                sum_2++;
-                break;
-            }
-        }
-    }
+    return levels.every((_, i, arr) => i === 0 || Math.abs(arr[i] - arr[i - 1]) >= 1 && Math.abs(arr[i] - arr[i - 1]) <= 3);
 }
 
-console.log(sum_1);
-console.log(sum_2);
+function countSafeReports(data) {
+    const reports = data.trim().split('\n');
+    return reports.filter(isSafeReport).length;
+}
+
+//part 2
+
+function isSafeReport2(report) {
+    const levels = report.split(' ').map(Number);
+
+    if (checkSafety(levels)) {
+        return true;
+    }
+
+    for (let i = 0; i < levels.length; i++) {
+        const modifiedLevels = levels.slice(0, i).concat(levels.slice(i + 1));
+        if (checkSafety(modifiedLevels)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function checkSafety(levels) {
+    const isIncreasing = levels.every((_, i, arr) => i === 0 || arr[i] > arr[i - 1]);
+    const isDecreasing = levels.every((_, i, arr) => i === 0 || arr[i] < arr[i - 1]);
+
+    if (!isIncreasing && !isDecreasing) {
+        return false;
+    }
+
+    return levels.every((_, i, arr) => i === 0 || Math.abs(arr[i] - arr[i - 1]) >= 1 && Math.abs(arr[i] - arr[i - 1]) <= 3);
+}
+
+function countSafeReports2(data) {
+    const reports = data.trim().split('\n');
+    return reports.filter(isSafeReport2).length;
+}
+
+console.log(countSafeReports(input));
+console.log(countSafeReports2(input));
