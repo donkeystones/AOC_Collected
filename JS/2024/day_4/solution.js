@@ -13,6 +13,7 @@ let width = data_2D_arr[0].length;
 let height = data_2D_arr.length;
 
 let sum1 = 0;
+let sum2 = 0;
 
 //Part 1
 for(let y = 0; y < data_2D_arr.length; y++){
@@ -72,7 +73,17 @@ for(let y = 0; y < data_2D_arr.length; y++){
 
             if(word === "XMAS") sum1++;
         }
+
+        //Part 2
+        if(x > 0 && x < width - 1 && y > 0 && y < height - 1){
+            if((data_2D_arr[y][x] === "A" && data_2D_arr[y-1][x-1] === "M" && data_2D_arr[y+1][x-1] === "M" && data_2D_arr[y-1][x+1] === "S" && data_2D_arr[y+1][x+1] === "S") ||
+            (data_2D_arr[y][x] === "A" && data_2D_arr[y-1][x-1] === "M" && data_2D_arr[y+1][x-1] === "S" && data_2D_arr[y-1][x+1] === "M" && data_2D_arr[y+1][x+1] === "S") ||
+            (data_2D_arr[y][x] === "A" && data_2D_arr[y-1][x-1] === "S" && data_2D_arr[y+1][x-1] === "M" && data_2D_arr[y-1][x+1] === "S" && data_2D_arr[y+1][x+1] === "M") ||
+            (data_2D_arr[y][x] === "A" && data_2D_arr[y-1][x-1] === "S" && data_2D_arr[y+1][x-1] === "S" && data_2D_arr[y-1][x+1] === "M" && data_2D_arr[y+1][x+1] === "M")) sum2++;
+        }
+
     }
 }
 
 console.log(sum1);
+console.log(sum2);
