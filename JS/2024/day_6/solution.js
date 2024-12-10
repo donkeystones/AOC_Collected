@@ -1,5 +1,5 @@
 let fs = require("fs");
-var data = fs.readFileSync('./input.txt','utf8');
+var data = fs.readFileSync('./example.txt','utf8');
 
 let distinct_positions = [];
 
@@ -11,6 +11,11 @@ let data_2d_arr = [];
 for(let row of data_arr){
     data_2d_arr.push(row.split(""));
 }
+
+function convert_pos_to_string(y,x){
+    return `${y},${x}`;
+}
+
 
 let width = data_2d_arr[0].length;
 let height = data_2d_arr.length;
@@ -37,6 +42,40 @@ while(!out_of_bounds){
     }
 
     if(dir === "N"){
+        if(data_2d_arr[guard.y-1][guard.x] === "#"){
+            dir = "E"
+        }else {
+            guard.y -= 1;
+        }
+    }
+    if(dir === "E"){
+        if(data_2d_arr[guard.y][guard.x+1] === "#"){
+            dir = "S"
+        }else {
+            guard.x += 1;
+        }
+    }
+    
+    if(dir === "S"){
+        if(data_2d_arr[guard.y+1][guard.x] === "#"){
+            dir = "W"
+        }else {
+            guard.y += 1;
+        }
+    }
+    
+    if(dir === "W"){
+        if(data_2d_arr[guard.y][guard.x-1] === "#"){
+            dir = "N"
+        }else {
+            guard.x += 1;
+        }
+    }
 
+    console.log("Guard: x " + guard.x + ", y " + guard.y)
+    if(distinct_positions.findIndex(pos => pos === convert_pos_to_string(guard.y,guard.x)) === -1){
+        distinct_positions.push(convert_pos_to_string(guard.y,guard.x))
     }
 }
+
+console.log(distinct_positions.length);
